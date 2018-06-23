@@ -15,13 +15,14 @@ class ViewController: NSViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		textView.string = "aoe(“a”,”b”,”c”),(“d”,”e”,”f”)"
+		textView.string = "{\n\t\"title\": \"Programmer Dvorak-CmdQwerty Keyboard (rev 2)\",\n\t\"rules\": [\n\t\t{\n\t\t\t\"description\": \"Remap keys to use Programmer Dvorak-CmdQwerty keyboard layout\",\n\t\t\t\"manipulators\": [\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"basic\",\n\t\t\t\t\t\"from\": {\n\t\t\t\t\t\t\"key_code\": (\"q\",\"w\",\"e\",\"r\",\"t\",\"y\",\"u\",\"i\",\"o\",\"p\",\"openb_racket\",\"close_bracket\",\"a\",\"s\",\"d\",\"f\",\"g\",\"h\",\"j\",\"k\",\"l\",\"semicolon\",\"quote\",\"z\",\"x\",\"c\",\"v\",\"b\",\"n\",\"m\",\"comma\",\"period\",\"slash\")\n\t\t\t\t\t},\n\t\t\t\t\t\"to\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"key_code\": (\"quote\",\"comma\",\"period\",\"p\",\"y\",\"f\",\"g\",\"c\",\"r\",\"l\",\"slash\",\"equal_sign\",\"a\",\"o\",\"e\",\"u\",\"i\",\"d\",\"h\",\"t\",\"n\",\"s\",\"hyphen\",\"semicolon\",\"q\",\"j\",\"k\",\"x\",\"b\",\"m\",\"w\",\"v\",\"z\"),\n\t\t\t\t\t\t\t\"modifiers\": [\n\t\t\t\t\t\t\t\t\"left_shift\"\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}"
 		NSEvent.addLocalMonitorForEvents(matching: .keyUp) {
 			self.keyDown(with: $0)
 			return $0
 		}
 		// Do any additional setup after loading the view.
 	}
+	
 	
 	override func keyUp(with event: NSEvent) {
 		let blocks = Parser.findParenthesis(string: textView.string)
@@ -40,13 +41,19 @@ class ViewController: NSViewController {
 	func parseText() {
 		let text = textView.string
 		let blocks = Parser.findParenthesis(string: text)
+		print("blocks: \(blocks)")
 		let arrays = Parser.separatebyCommas(array: blocks)
+		print("arrays: \(arrays)")
 		// Rearrange array
 		var pairArray = [String]()
 		var rearrangedArray = [[String]]()
 		for index1 in 0..<arrays[0].count {
 			for index2 in 0..<arrays.count {
-				pairArray.append(arrays[index2][index1])
+				if arrays.indices.contains(index2) {
+					if arrays[index2].indices.contains(index1) {
+						pairArray.append(arrays[index2][index1])
+					}
+				}
 			}
 			rearrangedArray.append(pairArray)
 			pairArray.removeAll()
@@ -56,7 +63,10 @@ class ViewController: NSViewController {
 		var codeText = ""
 		for index in 0..<count {
 			// Replacing parenthesis:
-			let text = Parser.replaceParenthesisWithStrings(string: textView.string, regexpArray: rearrangedArray[index])
+			var text = Parser.replaceParenthesisWithStrings(string: textView.string, regexpArray: rearrangedArray[index])
+			if index != count {
+				text = "\(text),"
+			}
 			codeText.append("\(text)\n")
 		}
 		resultView.string = codeText
