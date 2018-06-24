@@ -22,6 +22,31 @@ class Parser {
 			return []
 		}
 	}
+	static func findBeforeBlock(string: String) -> String {
+		var result = ""
+		let matches = self.matches(for: "(.|\n)*<", in: string)
+		result = matches.first!
+		result.removeLast()
+		return result
+	}
+	static func findAfterBlock(string: String) -> String {
+		var result = ""
+		let matches = self.matches(for: ">(.|\n)*", in: string)
+		result = matches.first!
+		result.removeFirst()
+		return result
+	}
+	static func findBlock(string: String) -> String {
+		var result = ""
+		let matches = self.matches(for: "(\\<(.|\n)*\\>)", in: string)
+		let match = matches.first
+		if match != nil {
+			result = match!
+			result.removeFirst()
+			result.removeLast()
+		}
+		return result
+	}
 	
 	static func findParenthesis(string: String) -> [String] {
 		var result = [String]()
