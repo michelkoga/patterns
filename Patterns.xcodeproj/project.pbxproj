@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		DE3552E420DCC1AD00B1666F /* TODO in Resources */ = {isa = PBXBuildFile; fileRef = DE3552E320DCC1AD00B1666F /* TODO */; };
+		DE68FEB620E29A1900EB7C4E /* Scroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE68FEB520E29A1900EB7C4E /* Scroller.swift */; };
 		DEEA1EE620DCA1E6002EBE43 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEEA1EE520DCA1E6002EBE43 /* AppDelegate.swift */; };
 		DEEA1EE820DCA1E6002EBE43 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEEA1EE720DCA1E6002EBE43 /* ViewController.swift */; };
 		DEEA1EEB20DCA1E6002EBE43 /* Patterns.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DEEA1EE920DCA1E6002EBE43 /* Patterns.xcdatamodeld */; };
@@ -20,6 +21,7 @@
 
 /* Begin PBXFileReference section */
 		DE3552E320DCC1AD00B1666F /* TODO */ = {isa = PBXFileReference; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
+		DE68FEB520E29A1900EB7C4E /* Scroller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scroller.swift; sourceTree = "<group>"; };
 		DEEA1EE220DCA1E6002EBE43 /* Patterns.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Patterns.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEEA1EE520DCA1E6002EBE43 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DEEA1EE720DCA1E6002EBE43 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -68,9 +70,10 @@
 				DEEA1EE720DCA1E6002EBE43 /* ViewController.swift */,
 				DEEA1EEC20DCA1E8002EBE43 /* Assets.xcassets */,
 				DEEA1EEE20DCA1E8002EBE43 /* Main.storyboard */,
+				DE68FEB520E29A1900EB7C4E /* Scroller.swift */,
 				DE3552E320DCC1AD00B1666F /* TODO */,
-				DEEA1EF820DCAAA6002EBE43 /* ResultView.swift */,
 				DEEA1EFA20DCB37D002EBE43 /* WriteView.swift */,
+				DEEA1EF820DCAAA6002EBE43 /* ResultView.swift */,
 				DEEA1EF120DCA1E8002EBE43 /* Info.plist */,
 				DEEA1EF220DCA1E8002EBE43 /* Patterns.entitlements */,
 				DEEA1EE920DCA1E6002EBE43 /* Patterns.xcdatamodeld */,
@@ -150,6 +153,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DEEA1EE820DCA1E6002EBE43 /* ViewController.swift in Sources */,
+				DE68FEB620E29A1900EB7C4E /* Scroller.swift in Sources */,
 				DEEA1EF920DCAAA6002EBE43 /* ResultView.swift in Sources */,
 				DEEA1EFD20DCB787002EBE43 /* Parser.swift in Sources */,
 				DEEA1EFB20DCB37D002EBE43 /* WriteView.swift in Sources */,

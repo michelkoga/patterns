@@ -8,23 +8,24 @@
 
 import Cocoa
 
-class ViewController: NSViewController {
+class ViewController: NSViewController, NSTextViewDelegate {
 
 	@IBOutlet var textView: NSTextView!
 	@IBOutlet var resultView: ResultView!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		textView.delegate = self
+		//NotificationCenter.default.addObserver(self, selector: #selector(updateResultView), name: NSNotification.Name.UITextViewTextDidChange, object: nil)
 		textView.string = "{\n\t\"title\": \"Programmer Dvorak-CmdQwerty Keyboard\",\n\t\"rules\": [\n\t\t{\n\t\t\t\"description\": \"Remap keys to use Programmer Dvorak-CmdQwerty keyboard layout\",\n\t\t\t\"manipulators\": [\n<\t\t\t\t{\n\t\t\t\t\t\"type\": \"basic\",\n\t\t\t\t\t\"from\": {\n\t\t\t\t\t\t\"key_code\": (\"q\",\"w\",\"e\",\"r\",\"t\",\"y\",\"u\",\"i\",\"o\",\"p\",\"openb_racket\",\"close_bracket\",\"a\",\"s\",\"d\",\"f\",\"g\",\"h\",\"j\",\"k\",\"l\",\"semicolon\",\"quote\",\"z\",\"x\",\"c\",\"v\",\"b\",\"n\",\"m\",\"comma\",\"period\",\"slash\")\n\t\t\t\t\t},\n\t\t\t\t\t\"to\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"key_code\": (\"quote\",\"comma\",\"period\",\"p\",\"y\",\"f\",\"g\",\"c\",\"r\",\"l\",\"slash\",\"equal_sign\",\"a\",\"o\",\"e\",\"u\",\"i\",\"d\",\"h\",\"t\",\"n\",\"s\",\"hyphen\",\"semicolon\",\"q\",\"j\",\"k\",\"x\",\"b\",\"m\",\"w\",\"v\",\"z\"),\n\t\t\t\t\t\t\t\"modifiers\": [\n\t\t\t\t\t\t\t\t\"left_shift\"\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}>\n\t\t\t]\n\t\t}\n\t]\n}"
-		NSEvent.addLocalMonitorForEvents(matching: .keyUp) {
-			self.keyDown(with: $0)
-			return $0
-		}
+		updateResultView()
 		// Do any additional setup after loading the view.
 	}
 	
-	
-	override func keyUp(with event: NSEvent) {
+	func textDidChange(_ notification: Notification) {
+		updateResultView()
+	}
+	func updateResultView() {
 		let repeatBlock = Parser.findBlock(string: textView.string)
 		if repeatBlock != "" {
 			let blocks = Parser.findParenthesis(string: repeatBlock)
@@ -36,6 +37,13 @@ class ViewController: NSViewController {
 		} else {
 			resultView.string = textView.string
 		}
+	}
+	
+	override func keyUp(with event: NSEvent) {
+		//updateResultView()
+	}
+	override func controlTextDidChange(_ obj: Notification) {
+		updateResultView()
 	}
 	
 	override var representedObject: Any? {

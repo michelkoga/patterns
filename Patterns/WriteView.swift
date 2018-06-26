@@ -13,7 +13,7 @@ class WriteView: NSTextView {
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
 		self.isAutomaticSpellingCorrectionEnabled = false
-        // Drawing code here.
+        self.font = NSFont(name: "Courier", size: 14)
     }
     
 }
