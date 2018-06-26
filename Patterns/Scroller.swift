@@ -8,11 +8,12 @@
 
 import Cocoa
 
-class Scroller: NSScrollView {
+class Scroller: NSScroller {
 
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
-		self.autohidesScrollers = true
+		self.controlSize = NSControl.ControlSize(rawValue: 200)!
+		self.isHidden = false
+		
     }
-    
 }
