@@ -13,7 +13,7 @@ class ResultView: NSTextView {
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
 		self.isEditable = false
-		self.font = NSFont(name: "Courier", size: 14)
+		//self.font = NSFont(name: "Courier", size: 14)
     }
     
 }

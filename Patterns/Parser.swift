@@ -69,9 +69,13 @@ class Parser {
 		return arrays
 	}
 	static func findFirstParenthesis(string: String) -> String {
+		var result = ""
 		let matches = self.matches(for: "\\((.*?)\\)", in: string)
 		let match = matches.first
-		return match!
+		if match != nil {
+			result = match!
+		}
+		return result
 	}
 	static func replaceParenthesisWithStrings(string: String, regexpArray: [String]) -> String {
 		var text = string

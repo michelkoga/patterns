@@ -1,5 +1,5 @@
 //
-//  Scroller.swift
+//  ScrollView.swift
 //  Patterns
 //
 //  Created by 古賀ミッシェル on 2018/06/27.
@@ -8,10 +8,15 @@
 
 import Cocoa
 
-class Scroller: NSScroller {
+class ScrollView: NSScrollView {
 
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
-		//self.controlSize = NSControl.ControlSize(rawValue: 200)!
+		self.hasHorizontalScroller = true
+		self.horizontalScrollElasticity = .automatic
+		self.horizontalScrollElasticity = .automatic
+		self.autohidesScrollers = true
+		
     }
+    
 }

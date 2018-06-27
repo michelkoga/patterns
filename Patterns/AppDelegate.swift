@@ -11,8 +11,16 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-
-
+	@IBOutlet weak var darkMode: NSMenuItem!
+	
+	@IBAction func setMode(_ sender: NSMenuItem) {
+		if sender.state == .off {
+			sender.state = .on
+		} else {
+			sender.state = .off
+		}
+	}
+	
 	func applicationDidFinishLaunching(_ aNotification: Notification) {
 		// Insert code here to initialize your application
 	}

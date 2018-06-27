@@ -10,10 +10,17 @@ import Cocoa
 
 class WriteView: NSTextView {
 
-    override func draw(_ dirtyRect: NSRect) {
-        super.draw(dirtyRect)
+	override func draw(_ dirtyRect: NSRect) {
+		super.draw(dirtyRect)
 		self.isAutomaticSpellingCorrectionEnabled = false
-        self.font = NSFont(name: "Courier", size: 14)
+		//let font = NSFont(name: "Courier new", size: 12)
+		//self.font = font
+		//self.textStorage?.addAttribute(NSAttributedStringKey.font, value: font ?? "", range: NSRange(location: 0, length: self.string.count))
 		
-    }
+		//Make it Horizontaly Scrollable
+		self.maxSize = NSMakeSize(.greatestFiniteMagnitude,.greatestFiniteMagnitude)
+		self.isHorizontallyResizable = true
+		self.textContainer?.widthTracksTextView = false
+		self.textContainer?.containerSize = NSMakeSize(.greatestFiniteMagnitude,.greatestFiniteMagnitude)
+	}
 }

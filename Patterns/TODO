@@ -1,12 +1,13 @@
 DOING:
-- Learn how to highlight text view
 
 TODO:
-- Highlight Text
 - Think save method
-- 
+- Highlight background, including after new line
 
 DONE
 - put it into github
 - findParenthesis function
 - rebuild function
+- Learn how to highlight text view
+- Highlight inside parenthesis yellow
+- Highlight inside blocks green

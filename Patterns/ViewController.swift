@@ -9,7 +9,8 @@
 import Cocoa
 
 class ViewController: NSViewController, NSTextViewDelegate {
-
+	// Variables:
+	var darkMode = false
 	@IBOutlet var textView: NSTextView!
 	@IBOutlet var resultView: ResultView!
 	
@@ -19,12 +20,47 @@ class ViewController: NSViewController, NSTextViewDelegate {
 		//NotificationCenter.default.addObserver(self, selector: #selector(updateResultView), name: NSNotification.Name.UITextViewTextDidChange, object: nil)
 		textView.string = "{\n\t\"title\": \"Programmer Dvorak-CmdQwerty Keyboard\",\n\t\"rules\": [\n\t\t{\n\t\t\t\"description\": \"Remap keys to use Programmer Dvorak-CmdQwerty keyboard layout\",\n\t\t\t\"manipulators\": [\n<\t\t\t\t{\n\t\t\t\t\t\"type\": \"basic\",\n\t\t\t\t\t\"from\": {\n\t\t\t\t\t\t\"key_code\": (\"q\",\"w\",\"e\",\"r\",\"t\",\"y\",\"u\",\"i\",\"o\",\"p\",\"openb_racket\",\"close_bracket\",\"a\",\"s\",\"d\",\"f\",\"g\",\"h\",\"j\",\"k\",\"l\",\"semicolon\",\"quote\",\"z\",\"x\",\"c\",\"v\",\"b\",\"n\",\"m\",\"comma\",\"period\",\"slash\")\n\t\t\t\t\t},\n\t\t\t\t\t\"to\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"key_code\": (\"quote\",\"comma\",\"period\",\"p\",\"y\",\"f\",\"g\",\"c\",\"r\",\"l\",\"slash\",\"equal_sign\",\"a\",\"o\",\"e\",\"u\",\"i\",\"d\",\"h\",\"t\",\"n\",\"s\",\"hyphen\",\"semicolon\",\"q\",\"j\",\"k\",\"x\",\"b\",\"m\",\"w\",\"v\",\"z\"),\n\t\t\t\t\t\t\t\"modifiers\": [\n\t\t\t\t\t\t\t\t\"left_shift\"\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}>\n\t\t\t]\n\t\t}\n\t]\n}"
 		updateResultView()
+		setStyle(with: "Off")
+		highlightBlocks()
 		highlightParenthesis()
-		// Do any additional setup after loading the view.
+		let font = NSFont(name: "Monaco", size: 18)
+		textView.font = font
+		resultView.font = font
+		//textView.textStorage?.addAttribute(NSAttributedStringKey.font, value: font ?? "", range: NSRange(location: 0, length: textView.string.count))
 	}
-	
+	@IBAction func changeDarkMode (_ sender: NSMenuItem) {
+		if sender.state == .on {
+			darkMode = false
+			sender.state = .off
+			setStyle(with: "Off")
+		} else {
+			darkMode = true
+			sender.state = .on
+			setStyle(with: "On")
+		}
+		highlightBlocks()
+		highlightParenthesis()
+	}
+	func setStyle(with string: String) {
+		switch string {
+		case "On":
+			print("On")
+			textView.backgroundColor = NSColor.black
+			resultView.backgroundColor = NSColor.black
+			textView.textColor = NSColor.lightGray
+			resultView.textColor = NSColor.white
+		case "Off":
+			textView.backgroundColor = NSColor.white
+			resultView.backgroundColor = NSColor.white
+			textView.textColor = NSColor.gray
+			resultView.textColor = NSColor.black
+		default:
+			break
+		}
+	}
 	func textDidChange(_ notification: Notification) {
 		updateResultView()
+		highlightBlocks()
 		highlightParenthesis()
 	}
 	func updateResultView() {
@@ -40,19 +76,38 @@ class ViewController: NSViewController, NSTextViewDelegate {
 			resultView.string = textView.string
 		}
 	}
+	func highlightBlocks() {
+		let text = textView.string
+		let matches = Parser.matches(for: "(\\<(.|\n)*\\>)", in: text)
+		//let lightRed = NSColor.red.withAlphaComponent(0.3)
+		for match in matches {
+			let range = text.range(of: match)
+			let nsRange = text.nsRange(from: range!)
+			if darkMode == false {
+				textView.textStorage?.addAttribute(NSAttributedStringKey.foregroundColor, value: NSColor.black, range: nsRange)
+			} else {
+				textView.textStorage?.addAttribute(NSAttributedStringKey.foregroundColor, value: NSColor.white, range: nsRange)
+			}
+		}
+	}
 	func highlightParenthesis() {
 		let text = textView.string
-		let match = Parser.matches(for: "\\((.*?)\\)", in: text)
-		let range = text.range(of: match[0])
-		let nsRange = text.nsRange(from: range!)
-		print(nsRange)
-		textView.textStorage?.addAttribute(NSAttributedStringKey.backgroundColor, value: NSColor.yellow, range: nsRange)
+		let matches = Parser.matches(for: "\\((.*?)\\)", in: text)
+		let lightYellow = NSColor.init(hue: 0.2, saturation: 0.4, brightness: 1, alpha: 0.3)
+		for match in matches {
+			let range = text.range(of: match)
+			let nsRange = text.nsRange(from: range!)
+			if darkMode == false {
+				textView.textStorage?.addAttribute(NSAttributedStringKey.foregroundColor, value: NSColor.blue, range: nsRange)
+				textView.insertionPointColor = NSColor.black
+			} else {
+				textView.textStorage?.addAttribute(NSAttributedStringKey.foregroundColor, value: NSColor.yellow, range: nsRange)
+				textView.insertionPointColor = NSColor.white
+			}
+		}
 	}
 	override func keyUp(with event: NSEvent) {
 		//updateResultView()
-	}
-	override func controlTextDidChange(_ obj: Notification) {
-		updateResultView()
 	}
 	
 	override var representedObject: Any? {
