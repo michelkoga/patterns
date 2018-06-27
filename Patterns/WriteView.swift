@@ -14,6 +14,6 @@ class WriteView: NSTextView {
         super.draw(dirtyRect)
 		self.isAutomaticSpellingCorrectionEnabled = false
         self.font = NSFont(name: "Courier", size: 14)
+		
     }
-    
 }

@@ -19,11 +19,13 @@ class ViewController: NSViewController, NSTextViewDelegate {
 		//NotificationCenter.default.addObserver(self, selector: #selector(updateResultView), name: NSNotification.Name.UITextViewTextDidChange, object: nil)
 		textView.string = "{\n\t\"title\": \"Programmer Dvorak-CmdQwerty Keyboard\",\n\t\"rules\": [\n\t\t{\n\t\t\t\"description\": \"Remap keys to use Programmer Dvorak-CmdQwerty keyboard layout\",\n\t\t\t\"manipulators\": [\n<\t\t\t\t{\n\t\t\t\t\t\"type\": \"basic\",\n\t\t\t\t\t\"from\": {\n\t\t\t\t\t\t\"key_code\": (\"q\",\"w\",\"e\",\"r\",\"t\",\"y\",\"u\",\"i\",\"o\",\"p\",\"openb_racket\",\"close_bracket\",\"a\",\"s\",\"d\",\"f\",\"g\",\"h\",\"j\",\"k\",\"l\",\"semicolon\",\"quote\",\"z\",\"x\",\"c\",\"v\",\"b\",\"n\",\"m\",\"comma\",\"period\",\"slash\")\n\t\t\t\t\t},\n\t\t\t\t\t\"to\": [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\"key_code\": (\"quote\",\"comma\",\"period\",\"p\",\"y\",\"f\",\"g\",\"c\",\"r\",\"l\",\"slash\",\"equal_sign\",\"a\",\"o\",\"e\",\"u\",\"i\",\"d\",\"h\",\"t\",\"n\",\"s\",\"hyphen\",\"semicolon\",\"q\",\"j\",\"k\",\"x\",\"b\",\"m\",\"w\",\"v\",\"z\"),\n\t\t\t\t\t\t\t\"modifiers\": [\n\t\t\t\t\t\t\t\t\"left_shift\"\n\t\t\t\t\t\t\t]\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}>\n\t\t\t]\n\t\t}\n\t]\n}"
 		updateResultView()
+		highlightParenthesis()
 		// Do any additional setup after loading the view.
 	}
 	
 	func textDidChange(_ notification: Notification) {
 		updateResultView()
+		highlightParenthesis()
 	}
 	func updateResultView() {
 		let repeatBlock = Parser.findBlock(string: textView.string)
@@ -38,7 +40,14 @@ class ViewController: NSViewController, NSTextViewDelegate {
 			resultView.string = textView.string
 		}
 	}
-	
+	func highlightParenthesis() {
+		let text = textView.string
+		let match = Parser.matches(for: "\\((.*?)\\)", in: text)
+		let range = text.range(of: match[0])
+		let nsRange = text.nsRange(from: range!)
+		print(nsRange)
+		textView.textStorage?.addAttribute(NSAttributedStringKey.backgroundColor, value: NSColor.yellow, range: nsRange)
+	}
 	override func keyUp(with event: NSEvent) {
 		//updateResultView()
 	}
@@ -85,5 +94,13 @@ class ViewController: NSViewController, NSTextViewDelegate {
 		resultView.string = beforeBlock + codeText + afterBlock
 	}
 
+}
+
+extension String {
+	func nsRange(from range: Range<String.Index>) -> NSRange {
+		let startPos = self.distance(from: self.startIndex, to: range.lowerBound)
+		let endPos = self.distance(from: self.startIndex, to: range.upperBound)
+		return NSMakeRange(startPos, endPos - startPos)
+	}
 }
 
